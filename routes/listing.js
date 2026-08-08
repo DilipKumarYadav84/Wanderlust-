@@ -38,6 +38,11 @@ router.get('/', wrapAsync(async(req, res) => {
 }));
 // new Route to display a form for creating a new listing
 router.get('/new', (req, res)=>{
+    console.log(req.user);
+    if(!req.isAuthenticated()){
+        req.flash("error", "You must be signed in to create a new listing!");
+        return res.redirect("/login");
+    }
     res.render("listings/new.ejs");
 
 })
