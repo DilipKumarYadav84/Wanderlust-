@@ -18,7 +18,8 @@
     </div>
    </div>
     <br />
-    <% if(currUser && currUser.id.equals(listing.owner)) { %>
+
+    <% if(currentUser && listing.owner && String(currentUser._id) === String(listing.owner._id)) { %>
     <div class="col-8 offset-3">
         <div class="btns">
             <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark edit-btn">Edit</a>
@@ -28,6 +29,7 @@
         </div>
     </div>
     <% } %>
+<% if(currentUser) { %>
     <div class="col-8 offset-3 review-section">
         <h4>Leave a Review</h4>
         <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
@@ -38,7 +40,6 @@
                 Please leave some comments.
             </div>
             </div>
-
         <div class="mb-3 mt-3">
             <label for="rating" class="form-label">Rating <output id="ratingValue">3</output></label>
             <input type="range" id="rating" name="review[rating]" min="1" max="5" class="form-range" value="3" step="1" oninput="ratingValue.value = this.value" required>
@@ -48,13 +49,14 @@
         </div>
             <button class="btn btn-outline-dark">Submit</button>
         </form>
+        <% } %>
         <hr />
         <p><strong>All Reviews</strong></p>
         <div class="row">
          <% for (let review of listing.reviews) { %>
             <div class="card col-5  ms-3 mb-3 review-card">
                 <div class="card-body">
-                    <h5 class="card-title">Jane Doe</h5>
+                    <h5 class="card-title">@<%= review.author.username %></h5>
                     <p class="card-text"> <%= review.comment %></p>
                     <p class="card-text">
                         Rating: <%= review.rating %> star </p>
