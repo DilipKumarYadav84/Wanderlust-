@@ -5,13 +5,18 @@ const { isLoggedIn, isOwner, validateListing} = require('../middleware.js');
 
 
 const listingController = require('../controllers/listings.js');
+const multer = require('multer');
+const { storage } = require('../cloudConfig.js'); // Import the storage configuration from cloudConfig.js
+const upload = multer({ storage }); // Configure multer to use the Cloudinary storage configuration
+
 
 
 
 router
     .route("/")
     .get(wrapAsync(listingController.index))
-    .post( isLoggedIn, validateListing, wrapAsync(listingController.createListing));
+     .post( isLoggedIn,upload.single('listing[image]'),validateListing, wrapAsync(listingController.createListing));
+    
 
  // new Route to display a form for creating a new listing
 router.get('/new', isLoggedIn, listingController.renderNewForm);

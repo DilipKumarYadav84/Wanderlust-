@@ -39,6 +39,11 @@ module.exports.createListing = async (req, res) => {
         ...normalizeListingInput(req.body),
         owner: req.user._id,
     });
+    if (req.file) {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        newListing.image = { url, filename }; // Set the image field with the uploaded file's URL and filename
+    }
     await newListing.save();
     req.flash("success", "Successfully created a new listing!");
     res.redirect(`/listings`);
