@@ -17,6 +17,17 @@ const listingSchema = new Schema({
     location: String,
 
     country: String,
+
+    latitude: {
+        type: Number,
+        default: 28.6139,
+    },
+
+    longitude: {
+        type: Number,
+        default: 77.2090,
+    },
+
     reviews: [
         {
             type: Schema.Types.ObjectId,
@@ -26,6 +37,41 @@ const listingSchema = new Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+    },
+    leafletgeo: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true,
+            default: "Point",
+        },
+        coordinates: {
+            type: [Number],
+            required: true,
+            default: [77.2090, 28.6139],
+        },  
+    },
+    category: {
+        type: String,
+        enum: [
+            "Trending",
+            "Rooms",
+            "Iconic Cities",
+            "Cities",
+            "Mountains",
+            "Mountain",
+            "Castles",
+            "Amazing Pools",
+            "Pools",
+            "Camping",
+            "Farms",
+            "farms",
+            "Arctic",
+            "arctic",
+            "Domes",
+            "Boats",
+        ],
+        default: "Trending",
     },
 });
 

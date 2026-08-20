@@ -1,4 +1,10 @@
 <% layout('layouts/boilerplate') %>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+/>
 
 <div class="row mt-3">
     <div class="col-8 offset-3">
@@ -20,6 +26,19 @@
         </div>
     </div>
 </div>
+
+<% const coordinates = listing.leafletgeo && Array.isArray(listing.leafletgeo.coordinates) ? listing.leafletgeo.coordinates.map(Number) : [77.2090, 28.6139]; %>
+<% const hasCoordinates = coordinates.length === 2 && Number.isFinite(coordinates[0]) && Number.isFinite(coordinates[1]) && coordinates[0] >= -180 && coordinates[0] <= 180 && coordinates[1] >= -90 && coordinates[1] <= 90; %>
+<% const mapCoordinates = hasCoordinates ? coordinates : [77.2090, 28.6139]; %>
+
+<div class="col-8 offset-3">
+    <h4>Where you'll be</h4>
+        <div
+            id="map"
+            data-coordinates="<%= JSON.stringify(mapCoordinates) %>"
+            data-title="<%= listing.title %>"
+        ></div>
+</div>
 <br />
 
 <% if(currentUser && listing.owner && String(currentUser._id) === String(listing.owner._id)) { %>
@@ -35,6 +54,7 @@
 
 <div class="col-8 offset-3 review-section">
     <% if(currentUser) { %>
+        <hr />
         <h4>Leave a Review</h4>
         <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
             <div class="mb-3 mt-3">
@@ -68,8 +88,10 @@
     <% } %>
 
     <hr />
-    <p><strong>All Reviews</strong></p>
+
+    <% if(listing.reviews.length > 0){ %>
     <div class="row">
+            <p><strong>All Reviews</strong></p>
         <% for (let review of listing.reviews) { %>
             <div class="card col-5  ms-3 mb-3 review-card">
                 <div class="card-body">
@@ -83,4 +105,14 @@
             </div>
         <% } %>
     </div>
+    <% } else { %>
+        <p class="text-muted">No reviews yet</p>
+    <% } %>
 </div>
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+></script>
+<script src="/js/map.js"></script>

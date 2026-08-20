@@ -136,9 +136,41 @@ strong {
     padding-left:0;
     padding-right: 0;
 }
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 1rem;
+    margin-top: 1rem;
+}
+.listing-home-marker {
+    background: transparent;
+    border: 0;
+}
+.listing-marker-pin {
+    width: 34px;
+    height: 34px;
+    border-radius: 50% 50% 50% 0;
+    background: #fe424d;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    transform: rotate(-45deg);
+}
+.listing-marker-pin i {
+    transform: rotate(45deg);
+}
 .btns form{
     margin: 0;
 }
 .review-card{
     border-radius: 14px;
+}
+
+@media (max-width: 768px) {
+    #map {
+        height: 300px;
+    }
 }
